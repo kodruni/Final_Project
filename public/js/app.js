@@ -30377,7 +30377,7 @@ if (false) {} else {
 /*!***************************************************************!*\
   !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
   \***************************************************************/
-/*! exports provided: BrowserRouter, HashRouter, Link, NavLink, MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, __RouterContext, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter */
+/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, __RouterContext, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter, BrowserRouter, HashRouter, Link, NavLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36117,9 +36117,16 @@ function (_React$Component) {
   _inherits(App, _React$Component);
 
   function App(props) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+    _this.state = {
+      token: null,
+      logged_in: null
+    };
+    return _this;
   }
 
   _createClass(App, [{
@@ -36196,8 +36203,37 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Login).call(this, props));
 
+    _defineProperty(_assertThisInitialized(_this), "handleEmailChange", function (event) {
+      _this.setState({
+        email: event.target.value
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handlePasswordChange", function (event) {
+      _this.setState({
+        password: event.target.value
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "handleFormSubmit", function (event) {
       event.preventDefault();
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: _this.state.email,
+          password: _this.state.password
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data.status === 'success') {
+          _this.props.onLoginSuccess(data.data.token);
+        }
+      });
     });
 
     _this.state = {

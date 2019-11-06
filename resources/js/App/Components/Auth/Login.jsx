@@ -8,11 +8,41 @@
            email: '',
            password: ''
        }
-
+    }
+    handleEmailChange = (event) => {
+      this.setState ({
+        email: event.target.value,
+      })
+    }
+    handlePasswordChange = (event) => {
+      this.setState ({
+        password: event.target.value,
+      })
     }
 
     handleFormSubmit = (event) => {
       event.preventDefault();
+
+
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Accept':       'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+    
+        if (data.status === 'success') {
+            this.props.onLoginSuccess(data.data.token);
+
+        }
+    })
    }
 
     render() {

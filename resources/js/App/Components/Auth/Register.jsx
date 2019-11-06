@@ -77,6 +77,7 @@ export default class Register extends React.Component {
              <input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
              <br/>
              <button type="submit" value="Submit">
+               {/* Need to add on change - if submit success */}
                <Link to="/login">Submit</Link>
              </button>
 
