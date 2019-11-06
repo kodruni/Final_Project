@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
  
 export default class Register extends React.Component {
     constructor(props) {
@@ -75,7 +76,9 @@ export default class Register extends React.Component {
              <label htmlFor="register_password_confirm">Confirm Password</label>
              <input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
              <br/>
-             <button type="submit" value="Submit">Submit</button>
+             <button type="submit" value="Submit">
+               <Link to="/login">Submit</Link>
+             </button>
 
            </form>
           </>
