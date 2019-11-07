@@ -1,5 +1,6 @@
  import React from 'react';
  import { Link } from 'react-router-dom';
+ import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
  export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +21,7 @@
         password: event.target.value,
       })  
     }
+    
     componentDidMount() {
       let token = window.localStorage.getItem('_token');
       if(token !== undefined) {
@@ -61,19 +63,24 @@
         return (
           <>
            <h1>Please Login Here</h1>
-            <form action="" method="post" onSubmit={ this.handleFormSubmit }>
-              Email:<br />
-              <input type="text" name="email" 
+            <Form action="" method="post" onSubmit={ this.handleFormSubmit }>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input type="text" name="email" 
+                    id="email"
                    value={ this.state.email } 
-                  onChange={ this.handleEmailChange } 
-            /><br />
-              Password:<br />
-             <input type="password" name="password" 
+                   onChange={ this.handleEmailChange } 
+             />
+             </FormGroup>
+             <FormGroup>
+             <Label for="password">Password</Label>
+             <Input type="password" name="password" 
                   value={ this.state.password } 
                  onChange={ this.handlePasswordChange }
-              /><br />
-              <input type="submit" value="Log in" />
-           </form>
+              />
+              </FormGroup>
+              <Button type="submit" value="Log in" color="danger">Log In</Button>
+           </Form>
            </>
         )
      }

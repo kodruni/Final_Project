@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText,  } from 'reactstrap';
+
  
 export default class Register extends React.Component {
     constructor(props) {
@@ -35,8 +37,11 @@ export default class Register extends React.Component {
         c_password: event.target.value
       });
 
+      // Password validation needs to be fixed
       if (this.state.password !== this.state.c_password) {
         console.log("Passwords don't match");
+    } else {
+      console.log("they match");
     }
   }
       
@@ -68,27 +73,32 @@ export default class Register extends React.Component {
         return (
           <>
            <h1>Please Register</h1>
-           <form action="" method="post" onSubmit={this.handleFormSubmit}>
-             <label htmlFor="register_name">Name</label>
-             <input type="text" name="register_name" value={this.state.name}
-              onChange={this.handleNameChange}  placeholder="Enter Your Name" id="register_name"/>
-             <br/>
-             <label htmlFor="register_name">Email</label>
-             <input type="email" name="register_email" value={this.state.email} onChange={this.handleEmailChange} placeholder="Enter Your Email" id="register_email"/>
-             <br/>
-             <label htmlFor="register_password">Password</label>
-             <input type="password" name="register_password" value={this.password} onChange={this.handlePasswordChange} placeholder="Enter Your Password" id="register_password"/>
-             <br/>
-             <label htmlFor="register_password_confirm">Confirm Password</label>
-             <input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
-             <br/>
+           <Form action="" method="post" onSubmit={this.handleFormSubmit}>
+             <FormGroup>
+              <Label htmlFor="register_name">Name</Label>
+               <Input type="text" name="register_name" value={this.state.name}
+               onChange={this.handleNameChange} 
+               placeholder="Enter Your Name" id="register_name"/>
+             </FormGroup>
+             <FormGroup>
+             <Label htmlFor="register_name">Email</Label>
+             <Input type="email" name="register_email" value={this.state.email} onChange={this.handleEmailChange} placeholder="Enter Your Email" id="register_email"/>
+             </FormGroup>
+             <FormGroup>
+             <Label htmlFor="register_password">Password</Label>
+             <Input type="password" name="register_password" value={this.password} onChange={this.handlePasswordChange} placeholder="Enter Your Password" id="register_password"/>
+             </FormGroup>
+             <FormGroup>
+             <Label htmlFor="register_password_confirm">Confirm Password</Label>
+             <Input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
+             </FormGroup>
        
                {/* Need to add on change - if submit success */}
                {/* Is not sended to database */}
                <Link to="/login">Login</Link> 
                  <Button type="submit" value="Submit" color="danger">Submit</Button>
              
-           </form>
+           </Form>
           </>
  
         )
