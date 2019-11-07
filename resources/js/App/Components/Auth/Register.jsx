@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
  
 export default class Register extends React.Component {
     constructor(props) {
@@ -9,7 +10,7 @@ export default class Register extends React.Component {
       name : '',
       email: '',
       password: '',
-      c_password: ''
+      c_password: '',
     }
   }
 
@@ -28,14 +29,21 @@ export default class Register extends React.Component {
             password: event.target.value
         });
     }
+  
     handlePasswordChangeConformation = (event) => {
       this.setState({
         c_password: event.target.value
       });
+
+      if (this.state.password !== this.state.c_password) {
+        console.log("Passwords don't match");
+    }
   }
       
   handleFormSubmit = (event) => {
     event.preventDefault();
+  
+    
 
     fetch('/api/register', {
         method: 'POST',
@@ -53,9 +61,7 @@ export default class Register extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-        // if (data.status === 'success') {
-        //     this.props.onLoginSuccess(data.data.token);
-        // }
+  
     })
 }
     render() {
@@ -76,11 +82,12 @@ export default class Register extends React.Component {
              <label htmlFor="register_password_confirm">Confirm Password</label>
              <input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
              <br/>
-             <button type="submit" value="Submit">
+       
                {/* Need to add on change - if submit success */}
-               <Link to="/login">Submit</Link>
-             </button>
-
+               {/* Is not sended to database */}
+               <Link to="/login">Login</Link> 
+                 <Button type="submit" value="Submit" color="danger">Submit</Button>
+             
            </form>
           </>
  

@@ -13,6 +13,53 @@ export default class App extends React.Component {
       }
 
     }
+ 
+
+    getToken = () => {
+      console.log(window.localStorage.getItem('token'));
+      return window.localStorage.getItem('token');
+     }
+
+    onLoginSuccess = (token) => {
+      this.setState({
+          logged_in: true,
+          token: token
+      })
+    }
+
+    componentDidMount = () => {
+      if (null === this.getToken()) {
+          this.setState({
+              logged_in: false,
+              token: null
+          })
+      } else {
+
+          fetch('/api/user', {
+              headers: {
+                  'Accept':       'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer '+this.getToken()
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.id) { // if user's id was in the response
+                  this.setState({
+                      logged_in: true,
+                      token: this.getToken()
+                  })
+              } else {
+                  this.setState({
+                      logged_in: false,
+                      token: null
+                  })
+              }                
+          });     
+      }
+  }
+    
+
     render() {
         return (
             <h1>You are signed in</h1>,

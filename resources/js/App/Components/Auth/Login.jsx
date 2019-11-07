@@ -6,7 +6,8 @@
         
        this.state = {
            email: '',
-           password: ''
+           password: '',
+           loginSuccess: '',
        }
     }
     handleEmailChange = (event) => {
@@ -17,12 +18,19 @@
     handlePasswordChange = (event) => {
       this.setState ({
         password: event.target.value,
-      })
+      })  
+    }
+    componentDidMount() {
+      let token = window.localStorage.getItem('_token');
+      if(token !== undefined) {
+        this.setState({
+          loginSuccess: true,
+        })
+      }
     }
 
     handleFormSubmit = (event) => {
       event.preventDefault();
-
 
       fetch('/api/login', {
         method: 'POST',
@@ -39,7 +47,11 @@
     .then(data => {
     
         if (data.status === 'success') {
-            this.props.onLoginSuccess(data.data.token);
+           window.localStorage.setItem('_token', data.success.token);
+           this.setState({
+             loginSuccess: true,
+           });
+           
 
         }
     })
