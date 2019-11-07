@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
+import Navigation from './Auth/Navigation.jsx';
 import Register from './Auth/Register.jsx';
 import Login from './Auth/Login.jsx';
 import { Link } from 'react-router-dom';
@@ -20,16 +21,16 @@ export default class App extends React.Component {
             <Switch>
                 <Route exact path="/" render={() => 
                 <>
+                 <Navigation>
                  <h1>Home Page</h1>
-                 <Link to="/register">Register</Link>
-                 <Link to="/login">Login</Link>
+                 </Navigation>
+                 
                 </>
-              }></Route>
+              }>
+                </Route>
 
-
-
-              <Route exact path="/register" render={() => <Register/>}></Route>
-              <Route exact path="/login" render={() => <Login/>}></Route>
+                <Route exact path="/register" render={() => <Register/>}></Route>
+                <Route exact path="/login" render={() => <Login/>}></Route>
             </Switch>
         )
     }
