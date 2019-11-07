@@ -1,12 +1,14 @@
  import React from 'react';
  import { Link } from 'react-router-dom';
+ import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
  export default class Login extends React.Component {
     constructor(props) {
         super(props);
         
        this.state = {
            email: '',
-           password: ''
+           password: '',
+           loginSuccess: '',
        }
     }
     handleEmailChange = (event) => {
@@ -17,12 +19,20 @@
     handlePasswordChange = (event) => {
       this.setState ({
         password: event.target.value,
-      })
+      })  
+    }
+    
+    componentDidMount() {
+      let token = window.localStorage.getItem('_token');
+      if(token !== undefined) {
+        this.setState({
+          loginSuccess: true,
+        })
+      }
     }
 
     handleFormSubmit = (event) => {
       event.preventDefault();
-
 
       fetch('/api/login', {
         method: 'POST',
@@ -39,7 +49,11 @@
     .then(data => {
     
         if (data.status === 'success') {
-            this.props.onLoginSuccess(data.data.token);
+           window.localStorage.setItem('_token', data.success.token);
+           this.setState({
+             loginSuccess: true,
+           });
+           
 
         }
     })
@@ -49,19 +63,24 @@
         return (
           <>
            <h1>Please Login Here</h1>
-            <form action="" method="post" onSubmit={ this.handleFormSubmit }>
-              Email:<br />
-              <input type="text" name="email" 
+            <Form action="" method="post" onSubmit={ this.handleFormSubmit }>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input type="text" name="email" 
+                    id="email"
                    value={ this.state.email } 
-                  onChange={ this.handleEmailChange } 
-            /><br />
-              Password:<br />
-             <input type="password" name="password" 
+                   onChange={ this.handleEmailChange } 
+             />
+             </FormGroup>
+             <FormGroup>
+             <Label for="password">Password</Label>
+             <Input type="password" name="password" 
                   value={ this.state.password } 
                  onChange={ this.handlePasswordChange }
-              /><br />
-              <input type="submit" value="Log in" />
-           </form>
+              />
+              </FormGroup>
+              <Button type="submit" value="Log in" color="danger">Log In</Button>
+           </Form>
            </>
         )
      }

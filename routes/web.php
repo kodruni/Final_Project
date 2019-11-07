@@ -16,3 +16,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+
+Route::get('/email', 'EmailController@index');
