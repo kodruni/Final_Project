@@ -31,20 +31,11 @@ export default class Register extends React.Component {
             password: event.target.value
         });
     }
-  
     handlePasswordChangeConformation = (event) => {
       this.setState({
         c_password: event.target.value
-      });
-
-      // Password validation needs to be fixed
-      if (this.state.password !== this.state.c_password) {
-        console.log("Passwords don't match");
-    } else {
-      console.log("they match");
-    }
-  }
-      
+    });
+    } 
   handleFormSubmit = (event) => {
     event.preventDefault();
   

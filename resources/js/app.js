@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <BrowserRouter>
+  {/* basename={} */}
    <App />
   </BrowserRouter>,
 document.getElementById('app')

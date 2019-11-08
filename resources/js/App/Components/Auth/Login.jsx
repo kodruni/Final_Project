@@ -9,6 +9,8 @@
            email: '',
            password: '',
            loginSuccess: '',
+           loginStatus: "Log in",
+           token: null
        }
     }
     handleEmailChange = (event) => {
@@ -24,16 +26,25 @@
     
     componentDidMount() {
       let token = window.localStorage.getItem('_token');
-      if(token !== undefined) {
+      if(token !== null) {
         this.setState({
           loginSuccess: true,
+          loginStatus: "Logout"
+        });
+      }
+      } 
+    handleLogout = () => {
+      if(this.state.loginStatus === "Logout") {
+        window.localStorage.clear();
+        this.setState({
+          loginSuccess: false,
+          loginStatus: "Log in",
+          token: null,
         })
       }
     }
-
     handleFormSubmit = (event) => {
       event.preventDefault();
-
       fetch('/api/login', {
         method: 'POST',
         headers: {
@@ -46,19 +57,18 @@
         })
     })
     .then(response => response.json())
-    .then(data => {
-    
-        if (data.status === 'success') {
+    .then(data => {  
+        if (data.status === 'success' && this.state.loginStatus === "Log in" && this.state.token === null) {
            window.localStorage.setItem('_token', data.success.token);
            this.setState({
              loginSuccess: true,
+             loginStatus: "Logout",
+             token: data.success.token,
            });
            
-
         }
     })
    }
-
     render() {
         return (
           <>
@@ -79,7 +89,7 @@
                  onChange={ this.handlePasswordChange }
               />
               </FormGroup>
-              <Button type="submit" value="Log in" color="danger">Log In</Button>
+              <Button type="submit" value="Log in" onClick={this.handleLogout} color="danger">{this.state.loginStatus}</Button>
            </Form>
            </>
         )

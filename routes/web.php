@@ -11,11 +11,16 @@
 |
 */
 
+// Auth:routes()
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+
+Route::get('/{anything?}', function () {
+    return view('welcome');
+})->where('anything', '.*');
 
 
 Route::get('/email', 'EmailController@index');
