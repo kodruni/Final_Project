@@ -14,6 +14,7 @@ export default class Navigation extends React.Component {
       isOpen: false
     };
   }
+  
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -33,10 +34,10 @@ export default class Navigation extends React.Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>      
             <NavItem>     
-                <Link to="/register">Register</Link>
+                <Link to="/app/register">Register</Link>
             </NavItem>
             <NavItem>       
-                <Link to="/login">Log In</Link>     
+               <Link to="/app/login"></Link>     
             </NavItem>
           </Nav>
         </Collapse>   

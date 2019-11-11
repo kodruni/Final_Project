@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText,  } from 'reactstrap';
 
@@ -36,11 +36,9 @@ export default class Register extends React.Component {
         c_password: event.target.value
     });
     } 
+
   handleFormSubmit = (event) => {
     event.preventDefault();
-  
-    
-
     fetch('/api/register', {
         method: 'POST',
         headers: {
@@ -57,7 +55,13 @@ export default class Register extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
+      if(data.success.token !== null)
+      //redirect didnt work!
+      return  this.props.history.push('/app/login') 
   
+    })
+    .catch(e => {
+      console.log(e);
     })
 }
     render() {
@@ -86,7 +90,7 @@ export default class Register extends React.Component {
        
                {/* Need to add on change - if submit success */}
                {/* Is not sended to database */}
-               <Link to="/login">Login</Link> 
+               <Link to="/app/login">Login</Link> 
                  <Button type="submit" value="Submit" color="danger">Submit</Button>
              
            </Form>

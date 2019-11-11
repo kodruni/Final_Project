@@ -1,17 +1,19 @@
  import React from 'react';
+ 
  import { Link } from 'react-router-dom';
  import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
  export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        
+
        this.state = {
            email: '',
            password: '',
-           loginSuccess: '',
+           loginSuccess: false,
            loginStatus: "Log in",
            token: null
        }
+
     }
     handleEmailChange = (event) => {
       this.setState ({
@@ -23,15 +25,23 @@
         password: event.target.value,
       })  
     }
+
+    setParentState = () => {
+      // this.props.callback(this.state.loginStatus)
+    }
+
+    
     
     componentDidMount() {
       let token = window.localStorage.getItem('_token');
       if(token !== null) {
         this.setState({
           loginSuccess: true,
-          loginStatus: "Logout"
+          loginStatus: "Logout",
         });
       }
+      this.props.childCallback(this.state.loginStatus)
+
       } 
     handleLogout = () => {
       if(this.state.loginStatus === "Logout") {
@@ -65,9 +75,15 @@
              loginStatus: "Logout",
              token: data.success.token,
            });
-           
+           return  this.props.history.push('/');       
         }
     })
+    .catch(e => {
+      console.log(e);
+    })
+
+
+   
    }
     render() {
         return (
