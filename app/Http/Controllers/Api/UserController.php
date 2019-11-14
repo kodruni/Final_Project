@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
-
+use App\Role;
 class UserController extends Controller
 {
     public $successStatus = 200;
@@ -20,12 +20,14 @@ class UserController extends Controller
         public function login(){ 
             if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
                 $user = Auth::user(); 
-                $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+                $success['token'] =  $user->createToken('MyApp')-> accessToken;
+                $role_id = $user->role_id == null ? 2 : $user->role_id;
                 return response()->json([
                     'success' => $success, 
                     'token_type' => "Bearer",
                     'message' => 'You are authorized to access',
-                    'status' => 'success'
+                    'status' => 'success',
+                    'role_id' => $role_id                
                 ], $this-> successStatus); 
             } 
             else{ 
@@ -62,6 +64,7 @@ class UserController extends Controller
             // createToken('MyApp') ---- what is argument?
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
             $success['name'] =  $user->name;
+            
              return response()->json([
             'success'=>$success,
             'message'=> 'You are registered'

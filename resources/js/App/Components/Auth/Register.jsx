@@ -15,7 +15,6 @@ export default class Register extends React.Component {
       c_password: '',
     }
   }
-
     handleNameChange = (event) => {
       this.setState({
         name: event.target.value
@@ -50,15 +49,14 @@ export default class Register extends React.Component {
             email: this.state.email,
             password: this.state.password,
             c_password: this.state.c_password
-
         })
     })
     .then(response => response.json())
     .then(data => {
-      if(data.success.token !== null)
-      //redirect didnt work!
-      return  this.props.history.push('/app/login') 
-  
+    console.log(data);
+      if(data.success.token !== null) {
+        return  this.props.history.push('/app/login') 
+      }
     })
     .catch(e => {
       console.log(e);
@@ -86,13 +84,8 @@ export default class Register extends React.Component {
              <FormGroup>
              <Label htmlFor="register_password_confirm">Confirm Password</Label>
              <Input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
-             </FormGroup>
-       
-               {/* Need to add on change - if submit success */}
-               {/* Is not sended to database */}
-               <Link to="/app/login">Login</Link> 
-                 <Button type="submit" value="Submit" color="danger">Submit</Button>
-             
+             </FormGroup>        
+              <Button type="submit" value="Submit" color="danger">Submit</Button>       
            </Form>
           </>
  

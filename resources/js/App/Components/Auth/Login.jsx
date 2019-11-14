@@ -1,6 +1,5 @@
  import React from 'react';
- 
- import { Link } from 'react-router-dom';
+ import { Redirect } from 'react-router'
  import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
  export default class Login extends React.Component {
     constructor(props) {
@@ -26,12 +25,6 @@
       })  
     }
 
-    setParentState = () => {
-      // this.props.callback(this.state.loginStatus)
-    }
-
-    
-    
     componentDidMount() {
       let token = window.localStorage.getItem('_token');
       if(token !== null) {
@@ -40,7 +33,6 @@
           loginStatus: "Logout",
         });
       }
-      this.props.childCallback(this.state.loginStatus)
 
       } 
     handleLogout = () => {
@@ -68,6 +60,7 @@
     })
     .then(response => response.json())
     .then(data => {  
+      console.log(data)
         if (data.status === 'success' && this.state.loginStatus === "Log in" && this.state.token === null) {
            window.localStorage.setItem('_token', data.success.token);
            this.setState({
@@ -75,15 +68,19 @@
              loginStatus: "Logout",
              token: data.success.token,
            });
-           return  this.props.history.push('/');       
+           if(data.role_id === 1) {
+             console.log('im admin');
+              <Redirect to='/app/' />   
+           } else if(data.role_id === 2) {
+            console.log('im normal user');
+           }
+          
+              
         }
     })
     .catch(e => {
       console.log(e);
     })
-
-
-   
    }
     render() {
         return (

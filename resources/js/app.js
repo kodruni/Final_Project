@@ -5,9 +5,9 @@ import App from './App/Components/App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-  <BrowserRouter>
-  {/* basename={} */}
-   <App />
-  </BrowserRouter>,
+ // <BrowserRouter>
+  
+   <App />,
+  //</BrowserRouter>,
 document.getElementById('app')
 );

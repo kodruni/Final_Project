@@ -1,7 +1,9 @@
 import React from 'react';
-import { Collapse, Navbar,NavbarToggler, NavbarBrand,Nav, NavItem,
+import { Collapse, Navbar,NavbarToggler, NavbarBrand,Nav, NavItem, 
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import ModalNavigationLogin from './Modals/ModalNavigationLogin.jsx';
+import ModalNavigationRegister from './Modals/ModalNavigationRegister.jsx';
 
 
 export default class Navigation extends React.Component {
@@ -23,27 +25,22 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-    
-    
       <>
-      
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">E-Market</NavbarBrand>
-        
+        <NavbarBrand href="/">E-Market</NavbarBrand>     
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>      
             <NavItem>     
-                <Link to="/app/register">Register</Link>
+              <ModalNavigationLogin />
             </NavItem>
             <NavItem>       
-               <Link to="/app/login"></Link>     
+              <ModalNavigationRegister />  
             </NavItem>
           </Nav>
         </Collapse>   
       </Navbar>
-      </>
- 
+      </> 
     )
   }
 }
