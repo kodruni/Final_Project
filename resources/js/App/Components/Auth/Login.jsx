@@ -12,8 +12,10 @@
            loginStatus: "Log in",
            token: null
        }
-
+       
     }
+
+    
     handleEmailChange = (event) => {
       this.setState ({
         email: event.target.value,
@@ -32,6 +34,8 @@
           loginSuccess: true,
           loginStatus: "Logout",
         });
+        this.props.childLoginValue(this.state.loginStatus);
+
       }
 
       } 
@@ -60,7 +64,6 @@
     })
     .then(response => response.json())
     .then(data => {  
-      console.log(data)
         if (data.status === 'success' && this.state.loginStatus === "Log in" && this.state.token === null) {
            window.localStorage.setItem('_token', data.success.token);
            this.setState({
@@ -68,9 +71,13 @@
              loginStatus: "Logout",
              token: data.success.token,
            });
+           this.props.childLoginValue(this.state.loginStatus);
+
+           this.props.childLoginStatus();
+         
            if(data.role_id === 1) {
              console.log('im admin');
-              <Redirect to='/app/' />   
+  
            } else if(data.role_id === 2) {
             console.log('im normal user');
            }

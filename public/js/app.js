@@ -50993,8 +50993,6 @@ function (_React$Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
-
         if (data.status === 'success' && _this.state.loginStatus === "Log in" && _this.state.token === null) {
           window.localStorage.setItem('_token', data.success.token);
 
@@ -51004,11 +51002,12 @@ function (_React$Component) {
             token: data.success.token
           });
 
+          _this.props.childLoginValue(_this.state.loginStatus);
+
+          _this.props.childLoginStatus();
+
           if (data.role_id === 1) {
             console.log('im admin');
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
-              to: "/app/"
-            });
           } else if (data.role_id === 2) {
             console.log('im normal user');
           }
@@ -51038,6 +51037,7 @@ function (_React$Component) {
           loginSuccess: true,
           loginStatus: "Logout"
         });
+        this.props.childLoginValue(this.state.loginStatus);
       }
     }
   }, {
@@ -51170,10 +51170,9 @@ function (_React$Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        console.log(data);
+        if (data.success.token !== null && _this.props.modalStatus) {
+          _this.props.childRegisterStatus(); // return  this.props.history.push('/app/login') 
 
-        if (data.success.token !== null) {
-          return _this.props.history.push('/app/login');
         }
       })["catch"](function (e) {
         console.log(e);
@@ -51260,6 +51259,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 /* harmony import */ var _Auth_Login_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../Auth/Login.jsx */ "./resources/js/App/Components/Auth/Login.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -51281,20 +51282,41 @@ var ModalNavigationLogin = function ModalNavigationLogin(props) {
       modal = _useState2[0],
       setModal = _useState2[1];
 
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('Log In'),
+      _useState4 = _slicedToArray(_useState3, 2),
+      loginValue = _useState4[0],
+      setLoginValue = _useState4[1];
+
   var toggle = function toggle() {
     return setModal(!modal);
+  };
+
+  var parentLoginStatus = function parentLoginStatus() {
+    console.log("Hi im login status");
+    setModal(false);
+  };
+
+  var parentLoginValue = function parentLoginValue(value) {
+    console.log("Hi im login Value");
+    console.log("props from child", props.loginStatus);
+    console.log("props from child", props.loginStatusFromChild);
+    setLoginValue(value);
   };
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
     color: "danger",
     onClick: toggle
-  }, buttonLabel, " Login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+  }, buttonLabel, " ", loginValue), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
     isOpen: modal,
     toggle: toggle,
     className: className
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], {
     toggle: toggle
-  }, "Modal title"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Auth_Login_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null))));
+  }, "Modal title"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Auth_Login_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props, {
+    modalStatus: modal,
+    childLoginStatus: parentLoginStatus,
+    childLoginValue: parentLoginValue
+  })))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ModalNavigationLogin);
@@ -51314,6 +51336,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 /* harmony import */ var _Auth_Register_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../Auth/Register.jsx */ "./resources/js/App/Components/Auth/Register.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -51329,6 +51353,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var ModalNavigationRegister = function ModalNavigationRegister(props) {
   var buttonLabel = props.buttonLabel,
       className = props.className;
+  console.log(props.registerStatus);
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -51339,6 +51364,12 @@ var ModalNavigationRegister = function ModalNavigationRegister(props) {
     return setModal(!modal);
   };
 
+  var parentRegisterStatus = function parentRegisterStatus() {
+    console.log("Hi im register status");
+    setModal(false);
+  }; // try to read = https://github.com/rohan-paul/Awesome-JavaScript-Interviews/blob/master/React/pass-props-from-Child-to-parent-Component-communication.md
+
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
     color: "primary",
     onClick: toggle
@@ -51348,7 +51379,10 @@ var ModalNavigationRegister = function ModalNavigationRegister(props) {
     className: className
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalHeader"], {
     toggle: toggle
-  }, "Modal title"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Auth_Register_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null))));
+  }, "Modal title"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(reactstrap__WEBPACK_IMPORTED_MODULE_1__["ModalBody"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Auth_Register_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props, {
+    modalStatus: modal,
+    childRegisterStatus: parentRegisterStatus
+  })))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ModalNavigationRegister);

@@ -9,14 +9,28 @@ const ModalNavigationLogin = (props) => {
   } = props;
 
   const [modal, setModal] = useState(false);
+  const [loginValue, setLoginValue] = useState('Log In')
   const toggle = () => setModal(!modal);
+
+  const parentLoginStatus = () =>  { 
+    console.log("Hi im login status");
+    setModal(false);
+  }
+
+  const parentLoginValue = (value) =>  { 
+    console.log("Hi im login Value");
+    console.log("props from child", props.loginStatus);
+    console.log("props from child", props.loginStatusFromChild);
+    setLoginValue(value);
+  }
+ 
   return (
     <div>
-      <Button color="danger" onClick={toggle}>{buttonLabel} Login</Button>
+  <Button color="danger" onClick={toggle}>{buttonLabel} {loginValue}</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
         <ModalBody>
-          <Login />
+          <Login {...props} modalStatus={modal} childLoginStatus = { parentLoginStatus } childLoginValue = {parentLoginValue} />
         </ModalBody>
       </Modal>
     </div>

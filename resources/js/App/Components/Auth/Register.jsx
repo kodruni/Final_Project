@@ -14,7 +14,9 @@ export default class Register extends React.Component {
       password: '',
       c_password: '',
     }
+
   }
+  
     handleNameChange = (event) => {
       this.setState({
         name: event.target.value
@@ -35,7 +37,6 @@ export default class Register extends React.Component {
         c_password: event.target.value
     });
     } 
-
   handleFormSubmit = (event) => {
     event.preventDefault();
     fetch('/api/register', {
@@ -53,12 +54,13 @@ export default class Register extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-    console.log(data);
-      if(data.success.token !== null) {
-        return  this.props.history.push('/app/login') 
+      if(data.success.token !== null && this.props.modalStatus) { 
+        this.props.childRegisterStatus();
+
+       // return  this.props.history.push('/app/login') 
       }
     })
-    .catch(e => {
+    .catch((e) => {
       console.log(e);
     })
 }
