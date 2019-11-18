@@ -3,8 +3,9 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText,  } from 'reactstrap';
 
+
  
-export default class Register extends React.Component {
+ class Register extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,8 +14,8 @@ export default class Register extends React.Component {
       email: '',
       password: '',
       c_password: '',
+      registerErrors: [],
     }
-
   }
   
     handleNameChange = (event) => {
@@ -56,12 +57,10 @@ export default class Register extends React.Component {
     .then(data => {
       if(data.success.token !== null && this.props.modalStatus) { 
         this.props.childRegisterStatus();
-
-       // return  this.props.history.push('/app/login') 
       }
     })
     .catch((e) => {
-      console.log(e);
+      this.state.registerErrors = e
     })
 }
     render() {
@@ -94,3 +93,5 @@ export default class Register extends React.Component {
         )
     }
 }
+
+export default Register

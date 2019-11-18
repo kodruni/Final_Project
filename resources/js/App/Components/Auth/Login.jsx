@@ -1,21 +1,19 @@
  import React from 'react';
+ import { connect } from 'react-redux';
  import { Redirect } from 'react-router'
  import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
- export default class Login extends React.Component {
+
+class Login extends React.Component {
     constructor(props) {
         super(props);
 
        this.state = {
            email: '',
            password: '',
-           loginSuccess: false,
-           loginStatus: "Log in",
-           token: null
+           token: null, 
+           loginErrors: []
        }
-       
     }
-
-    
     handleEmailChange = (event) => {
       this.setState ({
         email: event.target.value,
@@ -26,29 +24,27 @@
         password: event.target.value,
       })  
     }
-
+    
     componentDidMount() {
       let token = window.localStorage.getItem('_token');
       if(token !== null) {
-        this.setState({
-          loginSuccess: true,
-          loginStatus: "Logout",
-        });
-        this.props.childLoginValue(this.state.loginStatus);
-
+       this.props.loginFunction();
+       console.log("Component did mount", this.props.loginFunction())
       }
-
       } 
+
     handleLogout = () => {
-      if(this.state.loginStatus === "Logout") {
+      if(this.props.loginStatus === "Logout" ) {
+        console.log("Logout being called")
+        console.log("Logout",this.props.loginStatus )
         window.localStorage.clear();
         this.setState({
-          loginSuccess: false,
-          loginStatus: "Log in",
           token: null,
         })
+       this.props.logoutFunction();
       }
     }
+
     handleFormSubmit = (event) => {
       event.preventDefault();
       fetch('/api/login', {
@@ -64,32 +60,35 @@
     })
     .then(response => response.json())
     .then(data => {  
-        if (data.status === 'success' && this.state.loginStatus === "Log in" && this.state.token === null) {
+      console.log("DATA", data)
+      console.log("DATA", data.status )
+      console.log("DATA", this.props.loginStatus )
+      console.log("DATA", this.state.token  )
+        if (data.status === 'success' && this.props.loginStatus === "Login" && this.state.token === null) {
            window.localStorage.setItem('_token', data.success.token);
+           this.props.loginFunction();
            this.setState({
-             loginSuccess: true,
-             loginStatus: "Logout",
              token: data.success.token,
            });
-           this.props.childLoginValue(this.state.loginStatus);
 
-           this.props.childLoginStatus();
-         
            if(data.role_id === 1) {
              console.log('im admin');
   
            } else if(data.role_id === 2) {
             console.log('im normal user');
            }
-          
-              
         }
     })
     .catch(e => {
-      console.log(e);
+      this.setState({
+        loginErrors: e
+      })
     })
    }
     render() {
+      console.log("Render, token", this.state.token)
+      console.log("Render", this.props.loginStatus)
+      console.log("Render", this.props.loginSuccess)
         return (
           <>
            <h1>Please Login Here</h1>
@@ -109,9 +108,30 @@
                  onChange={ this.handlePasswordChange }
               />
               </FormGroup>
-              <Button type="submit" value="Log in" onClick={this.handleLogout} color="danger">{this.state.loginStatus}</Button>
+              <Button type="submit" value="Login" onClick={this.handleLogout} color="danger">{this.props.loginStatus}</Button>
            </Form>
            </>
         )
      }
  }
+
+//==========
+// REDUX
+//==========
+// What state be used
+const mapStateToProps = state => {
+   return {
+     loginStatus: state.loginStatus,
+     loginSuccess: state.loginSuccess,
+   };
+ }
+
+// What Actions be used
+ const mapDispatchToProps = dispatch => {
+   return {
+    loginFunction : () => dispatch({type: "login"}),
+    logoutFunction : () => dispatch({type: "logout"})
+  }
+}
+//what is connect?
+ export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -7,7 +7,7 @@ const ModalNavigationRegister= (props) => {
     buttonLabel,
     className
   } = props;
-  console.log(props.registerStatus);
+ 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   
