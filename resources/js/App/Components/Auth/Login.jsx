@@ -1,6 +1,6 @@
  import React from 'react';
  import { connect } from 'react-redux';
- import { Redirect } from 'react-router'
+ import { Redirect } from 'react-router';
  import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
 
 class Login extends React.Component {
