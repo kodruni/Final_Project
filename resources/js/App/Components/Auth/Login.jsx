@@ -1,6 +1,9 @@
  import React from 'react';
  import { Link } from 'react-router-dom';
  import { Form, FormGroup, Label, Input, FormText, Button } from 'reactstrap';
+ import { Dialog } from 'react';
+ //  import { Modal } from 'react-bootstrap';
+
  export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -61,27 +64,26 @@
 
     render() {
         return (
-          <>
-           <h1>Please Login Here</h1>
+          <Dialog>
             <Form action="" method="post" onSubmit={ this.handleFormSubmit }>
-            <FormGroup>
-              <Label for="email">Email</Label>
-              <Input type="text" name="email" 
-                    id="email"
-                   value={ this.state.email } 
-                   onChange={ this.handleEmailChange } 
-             />
-             </FormGroup>
-             <FormGroup>
-             <Label for="password">Password</Label>
-             <Input type="password" name="password" 
-                  value={ this.state.password } 
-                 onChange={ this.handlePasswordChange }
-              />
-              </FormGroup>
-              <Button type="submit" value="Log in" color="danger">Log In</Button>
-           </Form>
-           </>
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input type="text" name="email" 
+                        id="email"
+                       value={ this.state.email } 
+                       onChange={ this.handleEmailChange } 
+                 />
+                 </FormGroup>
+                 <FormGroup>
+                 <Label for="password">Password</Label>
+                 <Input type="password" name="password" 
+                      value={ this.state.password } 
+                     onChange={ this.handlePasswordChange }
+                  />
+                  </FormGroup>
+                  <Button type="submit" value="Log in" color="danger">Log In</Button>
+                </Form>
+              </Dialog>
         )
      }
  }

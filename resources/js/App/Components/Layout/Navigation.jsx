@@ -14,9 +14,16 @@ import {
   DropdownItem
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Alert} from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 
-export default class App extends React.Component {
+// import 'bootstrap/dist/css/bootstrap.css';
+// import './navigation.css';
+
+
+
+//CHECK THE CLASS NAME ON THE MASTER BRANCH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+export default class Navigation extends React.Component {
 
   constructor(props) {
     super(props);
@@ -33,12 +40,20 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <Alert color="danger">
+    return <div>
       <Fragment>
       
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">E-Market</NavbarBrand>
+      <Navbar light expand="md" style={{ padding: "2em", backgroundColor:"#427172"}}>
+        <NavbarBrand href="/" className="font-weight-bold">E-Market</NavbarBrand>
         
+        <InputGroup>
+        <Input/>
+        <InputGroupAddon addonType="append">
+          <InputGroupText>Search</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+
+
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
@@ -80,7 +95,8 @@ export default class App extends React.Component {
         </Collapse>
         
       </Navbar>
+      
       </Fragment>
-    </Alert>
+    </div>
   }
 }
