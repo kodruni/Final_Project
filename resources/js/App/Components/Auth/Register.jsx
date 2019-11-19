@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormText,  } from 'reactstrap';
 
+
  
-export default class Register extends React.Component {
+ class Register extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,9 +14,10 @@ export default class Register extends React.Component {
       email: '',
       password: '',
       c_password: '',
+      registerErrors: [],
     }
   }
-
+  
     handleNameChange = (event) => {
       this.setState({
         name: event.target.value
@@ -31,25 +33,13 @@ export default class Register extends React.Component {
             password: event.target.value
         });
     }
-  
     handlePasswordChangeConformation = (event) => {
       this.setState({
         c_password: event.target.value
-      });
-
-      // Password validation needs to be fixed
-      if (this.state.password !== this.state.c_password) {
-        console.log("Passwords don't match");
-    } else {
-      console.log("they match");
-    }
-  }
-      
+    });
+    } 
   handleFormSubmit = (event) => {
     event.preventDefault();
-  
-    
-
     fetch('/api/register', {
         method: 'POST',
         headers: {
@@ -61,12 +51,16 @@ export default class Register extends React.Component {
             email: this.state.email,
             password: this.state.password,
             c_password: this.state.c_password
-
         })
     })
     .then(response => response.json())
     .then(data => {
-  
+      if(data.success.token !== null && this.props.modalStatus) { 
+        this.props.childRegisterStatus();
+      }
+    })
+    .catch((e) => {
+      this.state.registerErrors = e
     })
 }
     render() {
@@ -91,16 +85,13 @@ export default class Register extends React.Component {
              <FormGroup>
              <Label htmlFor="register_password_confirm">Confirm Password</Label>
              <Input type="password" name="register_password_confirmation" value={this.passwordConformation} onChange={this.handlePasswordChangeConformation}  placeholder="Confirm Your Password" id="register_password_confirmation"/>
-             </FormGroup>
-       
-               {/* Need to add on change - if submit success */}
-               {/* Is not sended to database */}
-               <Link to="/login">Login</Link> 
-                 <Button type="submit" value="Submit" color="danger">Submit</Button>
-             
+             </FormGroup>        
+              <Button type="submit" value="Submit" color="danger">Submit</Button>       
            </Form>
           </>
  
         )
     }
 }
+
+export default Register
