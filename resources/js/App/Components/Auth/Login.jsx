@@ -109,7 +109,7 @@ class Login extends React.Component {
               </FormGroup>
               <Button type="submit" value="Login" onClick={this.handleLogout} color="danger">{this.props.loginStatus}</Button>
            </Form>
-           </>
+          </Dialog>
         )
      }
  }
