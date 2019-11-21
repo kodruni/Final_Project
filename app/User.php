@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends \TCG\Voyager\Models\User
 {
 
     use Notifiable;
@@ -41,5 +41,23 @@ class User extends Authenticatable
     ];
 
 
-    
+    public function charity()
+    {
+        return $this->hasOne(Charity::class);
+    }
+
+    public function order()
+    {
+        return $this->hasMany(Orders::class);
+    }
+
+    public function purchases () {
+        return $this->hasMany(UserPurchase::class);
+    }
+
+    public function address()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
+
 }

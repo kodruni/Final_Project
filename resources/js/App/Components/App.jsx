@@ -1,37 +1,32 @@
 import React from 'react';
-import { Route, Switch } from "react-router-dom";
-import Navigation from './Auth/Navigation.jsx';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Register from './Auth/Register.jsx';
 import Login from './Auth/Login.jsx';
-import { Link } from 'react-router-dom';
+import NotFoundPage from './Layout/NotFoundPage.jsx';
+import HomePage from './Pages/HomePage.jsx';
+
+
+
 export default class App extends React.Component {
     constructor(props) {
-        super(props);
-        
-        this.state = {
-          token: null,
-          logged_in: null
-      }
-
+        super(props); 
     }
- 
-    render() {
-        return (
-    
-            <Switch>
-                <Route exact path="/" render={() => 
-                <>
-                 <Navigation>
-                 <h1>Home Page</h1>
-                 </Navigation>
-                 
-                </>
-              }>
-                </Route>
 
-                <Route exact path="/register" render={() => <Register/>}></Route>
-                <Route exact path="/login" render={() => <Login/>}></Route>
+    render() {
+        const divStyle = {
+            color: 'silver',
+            backgroundImage: 'url('+ '/images/background.jpg' +')',
+          };
+        return (
+            <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={HomePage}/>
+                 <Route exact path="/app/register" component={Register}/>           
+               <Route exact path="/app/login" component={Login} />                 
+              {/* <Route exact path="/app/login" component={Login} /> */}
+              <Route path="*" component={NotFoundPage} />
             </Switch>
+            </BrowserRouter>
         )
     }
 }
